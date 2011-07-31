@@ -1,0 +1,65 @@
+------------------------------------------------------------------------
+Fri Jun 24 08:57:18 EDT 2011
+
+This will be the feed aggregator engine for Kindlefeeder, but also
+usable for other projects.
+
+PostgreSQL
+
+db/create.sql
+
+Create a database called 'feeds'
+
+? rchardet https://rubygems.org/gems/edouard-rchardet
+
+API
+
+  FetchFeed.from_url [feed-url]
+
+  takes care of getting the feed, parsing, and storing in postgres
+
+Next step is to rebuild the Rails app around this.
+
+Users
+Subscriptions
+Schedule
+
+What's the most conservative way of doing this?
+
+Keep MySQL and the schema, 
+
+Payload generator is a discrete part. Refactor this. and keep the middle 
+
+bin/payload_generator2 is not used any more. Feeds are fetched in
+lib/feed_couch.rb #refresh method. It doesn't seem this refresh method
+can handle https
+
+RelaxedPayloadGenerator is the key class used by Delivery.
+
+Payload Specification can be turned into a TABLE and Model. Or the
+fields can be added to delivery as discrete fields (instead of blob);
+
+TODO. 
+- Check ETag when updating feed.
+- private password feeds as user requested
+- NEW MOBI generation; periodical format
+- migrate feeds from MySQL to Postgresql
+  - check new feed creation
+- clean up rails; move to rails 3; put into git; simplify deployment
+
+
+
+------------------------------------------------------------------------
+Sat Jun 25 23:40:52 EDT 2011
+
+
+postgresql functions
+curval()
+setval()
+
+I can perhaps sync the feed_id of this table with feeds.id in the rails
+database?
+
+
+
+
