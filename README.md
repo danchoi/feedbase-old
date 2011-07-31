@@ -10,7 +10,7 @@ Better Instructions forthcoming
 
     Feedbase::Feed[feed_url: feed_url] || Feedbase::Feed.create(feed_url: feed_url)
 
-    # Instance methods and attributes
+    == Instance methods and attributes
 
     Feedbase::Feed#refresh
 
