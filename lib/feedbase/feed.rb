@@ -1,6 +1,8 @@
 require 'sequel'
 require 'feedbase/fetch_feed'
-DB = Sequel.connect 'postgres:///feeds'
+unless defined?(DB)
+  DB = Sequel.connect 'postgres:///feeds'
+end
 
 module Feedbase
 
