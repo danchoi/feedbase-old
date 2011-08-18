@@ -39,54 +39,6 @@ RelaxedPayloadGenerator is the key class used by Delivery.
 Payload Specification can be turned into a TABLE and Model. Or the
 fields can be added to delivery as discrete fields (instead of blob);
 
-TODO. 
-- Check ETag when updating feed.
-- private password feeds as user requested
-- NEW MOBI generation; periodical format
-- migrate feeds from MySQL to Postgresql
-  - check new feed creation
-- clean up rails; move to rails 3; put into git; simplify deployment
-
-
-
-------------------------------------------------------------------------
-Sat Jun 25 23:40:52 EDT 2011
-
-
-postgresql functions
-curval()
-setval()
-
-I can perhaps sync the feed_id of this table with feeds.id in the rails
-database?
-
-
-------------------------------------------------------------------------
-Thu Aug 18 12:12:06 EDT 2011
-
-We need to change the unique constraint on items to be over (feed_id, guid) and
-not over (guid) only.
-
-
-feeds=# \d items
-                                        Table "public.items"
-   Column   |            Type             |                        Modifiers
-------------+-----------------------------+---------------------------------------------------------
- item_id    | integer                     | not null default nextval('items_item_id_seq'::regclass)
- feed_id    | integer                     |
- guid       | character varying           | not null
- title      | character varying           |
- link       | character varying           |
- content    | text                        |
- author     | character varying           |
- word_count | integer                     |
- pub_date   | timestamp without time zone | default now()
-Indexes:
-    "items_pkey" PRIMARY KEY, btree (item_id)
-    "items_guid_key" UNIQUE, btree (guid)
-Foreign-key constraints:
-    "items_feed_id_fkey" FOREIGN KEY (feed_id) REFERENCES feeds(feed_id) ON DELETE CASCADE
-
 alter table items add constraint items_guid_feed_id_key UNIQUE (guid, feed_id);
 alter table items drop constraint items_guid_key;
 
@@ -111,6 +63,14 @@ Foreign-key constraints:
     "items_feed_id_fkey" FOREIGN KEY (feed_id) REFERENCES feeds(feed_id) ON DELETE CASCADE
 
 
++
+       items_created = data[:items].
+-        select {|item| Feedbase::Item[:guid => (item[:guid] || item[:link])].nil?}.
+-        map { |item|
++        select {|item|
++          guid = item[:guid] || item[:link]
++          Feedbase::Item[:guid => guid, :feed_id => feed_id].nil?
++        }. map { |item|
 
 
 
