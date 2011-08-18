@@ -29,12 +29,13 @@ create table feed_downloads (
 create table items (
   item_id serial primary key,
   feed_id integer REFERENCES feeds (feed_id) ON DELETE CASCADE,
-  guid varchar UNIQUE NOT NULL,
+  guid varchar NOT NULL,
   title varchar,
   link varchar,
   content text,
   author varchar,
   word_count integer,
-  pub_date timestamp default now()
+  pub_date timestamp default now(),
+  unique (giud, feed_id)
 );
 
